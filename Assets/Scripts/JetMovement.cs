@@ -6,7 +6,10 @@ public class JetMovement : MonoBehaviour
 {
 	public float speed = 50f; // Uçaðýn ileri hýzý
 	public float rotationSpeed = 10f; // Uçaðýn dönme hýzý
-	public float maxRotationAngle = 1f; // Maksimum dönme açýsý
+	public float maxRotationAngle = 45f; // Maksimum dönme açýsý
+	[SerializeField] Transform weaponTransform;
+	public float attackRange = 600f; // Saldýrý menzili
+	public GameObject bulletPrefab; // Kurþun prefabý
 
 	private Rigidbody rb;
 
@@ -19,33 +22,44 @@ public class JetMovement : MonoBehaviour
 	{
 		MoveJet();
 		RotateJet();
+		if (Input.GetKey(KeyCode.Space)) Attack();
 	}
 
 	void MoveJet()
 	{
-		// Uçaðý ileri doðru hareket ettir
-		rb.velocity = rb.transform.forward * speed * Time.deltaTime * 100;
+		// Klavye girdilerinden ileriye hareket et
+		rb.velocity = transform.forward * speed * Time.deltaTime * 100;
 	}
 
 	void RotateJet()
 	{
-		// Ekran merkezini referans al
-		Vector3 mousePos = Input.mousePosition;
-		float screenWidth = Screen.width;
-		float screenHeight = Screen.height;
+		// Klavye girdilerinden dönme hareketini al
+		float horizontalRotation = Input.GetAxis("Horizontal") * -rotationSpeed * Time.deltaTime * 10;
 
-		// Fare hareketlerini normalize et (-0.5, 0.5 aralýðýna getir)
-		float horizontal = (mousePos.x / screenWidth - 0.5f);
-		float vertical = (mousePos.y / screenHeight - 0.5f) / 2;
+		// Yeni rotasyonu hesapla ve uçaðý döndür
+		float verticalRotation = Input.GetAxis("Vertical") * rotationSpeed * Time.deltaTime * 10;
 
-		// Maksimum dönme açýsý ile çarp
-		float yaw = -horizontal * maxRotationAngle;
-		float pitch = -vertical * maxRotationAngle;
+		Quaternion deltaRotation = Quaternion.Euler(verticalRotation, 0, horizontalRotation);
+		rb.MoveRotation(rb.rotation * deltaRotation);
+	}
 
-		// Yeni rotasyonu hesapla
-		Quaternion targetRotation = Quaternion.Euler(pitch, 0, yaw);
+	void Attack()
+	{
+		// Uçaðýn önünden bir ray oluþtur
+		Ray ray = new Ray(transform.position, transform.forward);
+		RaycastHit hitInfo;
 
-		// Uçaðý yavaþça hedef rotasyona döndür
-		transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+		// Raycast ile düþmaný tespit et
+		if (Physics.Raycast(ray, out hitInfo, attackRange))
+		{
+			// Raycast düþmaný vurduysa ve vurduðu þey bir düþman ise saldýrý gerçekleþtir
+			if (hitInfo.collider.CompareTag("Enemy"))
+			{
+				// Düþmaný vurduðumuz yerde bir kurþun oluþtur
+				Instantiate(bulletPrefab, hitInfo.point, Quaternion.identity);
+				// Opsiyonel: Düþmaný yok etmek için
+				Destroy(hitInfo.collider.gameObject);
+			}
+		}
 	}
 }

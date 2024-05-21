@@ -43,7 +43,7 @@ public class InfiniteOcean : MonoBehaviour
 			for (int z = 0; z < oceanGridSize; z++)
 			{
 				Vector3 tilePos = oceanTiles[x, z].transform.position;
-				Vector3 offset = (tilePos / 2) - playerTransform.position;
+				Vector3 offset = tilePos - playerTransform.position;
 
 				if (offset.z <= -tileSize)
 				{

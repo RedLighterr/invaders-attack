@@ -187,7 +187,7 @@ MonoBehaviour:
   rotationSpeed: 12
   maxRotationAngle: 80
   weaponTransform: {fileID: 2127520542591366313}
-  attackRange: 600
+  attackRange: 90000
   bulletPrefab: {fileID: 3512105315993105916, guid: c5c3d05b3d4457b47b97c14083572acd,
     type: 3}
 --- !u!54 &1296675965165546331

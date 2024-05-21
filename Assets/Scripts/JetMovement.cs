@@ -49,16 +49,18 @@ public class JetMovement : MonoBehaviour
 		Ray ray = new Ray(transform.position, transform.forward);
 		RaycastHit hitInfo;
 
+		// Düþmaný vurduðumuz yerde bir kurþun oluþtur
+		Instantiate(bulletPrefab, weaponTransform.position, transform.rotation);
+
 		// Raycast ile düþmaný tespit et
 		if (Physics.Raycast(ray, out hitInfo, attackRange))
 		{
 			// Raycast düþmaný vurduysa ve vurduðu þey bir düþman ise saldýrý gerçekleþtir
-			if (hitInfo.collider.CompareTag("Enemy"))
+			if (hitInfo.collider.CompareTag("enemy"))
 			{
-				// Düþmaný vurduðumuz yerde bir kurþun oluþtur
-				Instantiate(bulletPrefab, hitInfo.point, Quaternion.identity);
 				// Opsiyonel: Düþmaný yok etmek için
 				Destroy(hitInfo.collider.gameObject);
+				print("vurdun");
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class JetMovement : MonoBehaviour
@@ -10,12 +11,18 @@ public class JetMovement : MonoBehaviour
 	[SerializeField] Transform weaponTransform;
 	public float attackRange = 600f; // Saldýrý menzili
 	public GameObject bulletPrefab; // Kurþun prefabý
+	[SerializeField] TextMeshProUGUI puanText;
+	[SerializeField] TextMeshProUGUI canText;
+	public int puan = 0;
+	public int can = 100;
+	[SerializeField] GameManager gm;
 
 	private Rigidbody rb;
 
 	void Start()
 	{
 		rb = GetComponent<Rigidbody>();
+		gm = FindObjectOfType<GameManager>();
 	}
 
 	void Update()
@@ -23,6 +30,7 @@ public class JetMovement : MonoBehaviour
 		MoveJet();
 		RotateJet();
 		if (Input.GetKey(KeyCode.Space)) Attack();
+		UIUpdate();
 	}
 
 	void MoveJet()
@@ -46,7 +54,7 @@ public class JetMovement : MonoBehaviour
 	void Attack()
 	{
 		// Uçaðýn önünden bir ray oluþtur
-		Ray ray = new Ray(transform.position, transform.forward);
+		Ray ray = new Ray(weaponTransform.position, transform.forward);
 		RaycastHit hitInfo;
 
 		// Düþmaný vurduðumuz yerde bir kurþun oluþtur
@@ -60,8 +68,32 @@ public class JetMovement : MonoBehaviour
 			{
 				// Opsiyonel: Düþmaný yok etmek için
 				Destroy(hitInfo.collider.gameObject);
-				print("vurdun");
+				puan++;
+				puanText.text = "Puan: " + puan.ToString();
+				//print("vurdun");
 			}
 		}
+	}
+
+	void OnTriggerEnter(Collider collision)
+	{
+		if (collision.gameObject.tag == "enemy")
+		{
+			can -= 20;
+			canText.text = "Can: " + can.ToString();
+			Destroy(collision.gameObject);
+			if (can <= 0)
+			{
+				can = 0;
+				canText.text = "Can: " + can.ToString();
+				gm.GameOverPanel();
+			}
+		}
+	}
+
+	void UIUpdate()
+	{
+		canText.text = "Can: " + can.ToString();
+		puanText.text = "Puan: " + puan.ToString();
 	}
 }

@@ -129,6 +129,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1296675965165546331}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5ab91b88b105e8f4885f0a90b3738878,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5062446802436791682}
   m_SourcePrefab: {fileID: 100100000, guid: 5ab91b88b105e8f4885f0a90b3738878, type: 3}
 --- !u!23 &3350314557640218944 stripped
 MeshRenderer:
@@ -190,6 +194,10 @@ MonoBehaviour:
   attackRange: 90000
   bulletPrefab: {fileID: 3512105315993105916, guid: c5c3d05b3d4457b47b97c14083572acd,
     type: 3}
+  puanText: {fileID: 0}
+  canText: {fileID: 0}
+  puan: 0
+  can: 100
 --- !u!54 &1296675965165546331
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -217,6 +225,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &5062446802436791682
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6174164459931963392}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 15.47929, y: 1.8275547, z: 22.280098}
+  m_Center: {x: -1.5793238, y: 0.8009448, z: 0.2693863}
 --- !u!4 &8865839461872417287 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2479137074172696406, guid: 5ab91b88b105e8f4885f0a90b3738878,
